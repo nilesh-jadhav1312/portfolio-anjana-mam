@@ -7,16 +7,15 @@ const {
   deleteResearch,
 } = require("../controllers/researchController");
 const { protect } = require("../middleware/authMiddleware");
-const upload = require("../middleware/uploadMiddleware");
 
 router
   .route("/")
   .get(getResearch)
-  .post(protect, upload.single("pdfFile"), createResearch);
+  .post(protect, createResearch);
 
 router
   .route("/:id")
-  .put(protect, upload.single("pdfFile"), updateResearch)
+  .put(protect, updateResearch)
   .delete(protect, deleteResearch);
 
 module.exports = router;

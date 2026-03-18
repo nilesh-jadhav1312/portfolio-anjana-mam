@@ -133,7 +133,7 @@ const Navbar = () => {
           onClick={(e) => handleScrollTo(e, "#home")}
           className="text-2xl font-bold tracking-wider text-black relative group overflow-hidden"
         >
-          <span className="relative z-10">Dr. Anjana Arakerimath</span>
+          <span className="relative z-10">Portfolio</span>
           <span className="absolute left-0 bottom-0 w-full h-0.5 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></span>
         </a>
 
@@ -176,33 +176,54 @@ const Navbar = () => {
       {/* Mobile Menu Slide In */}
       <AnimatePresence>
         {mobileMenuOpen && (
-          <motion.div
-            initial={{ x: "100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "100%" }}
-            transition={{ type: "tween", duration: 0.3 }}
-            className="fixed inset-y-0 right-0 w-64 bg-dark-base shadow-2xl flex flex-col pt-20 px-6 md:hidden border-l border-[#857567]/30"
-          >
-            {navLinks.map((link) => {
-              const targetId = link.href.replace("/#", "").replace("/", "");
-              const isActive = activeSection === targetId;
-
-              return (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  onClick={(e) => handleScrollTo(e, link.href)}
-                  className={`text-xl uppercase tracking-widest font-bold py-4 border-b border-black transition-colors ${
-                    isActive
-                      ? "text-[#5a5047]"
-                      : "text-[#857567] hover:text-[#5a5047]"
-                  }`}
+          <>
+            <button
+              type="button"
+              aria-label="Close menu"
+              onClick={() => setMobileMenuOpen(false)}
+              className="fixed inset-0 bg-black/40 md:hidden"
+            />
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "tween", duration: 0.3 }}
+              className="fixed inset-y-0 right-0 w-64 bg-dark-base shadow-2xl flex flex-col pt-6 px-6 md:hidden border-l border-[#857567]/30"
+            >
+              <div className="flex items-center justify-between mb-6">
+                <span className="text-light-text uppercase tracking-wider text-sm">
+                  Menu
+                </span>
+                <button
+                  type="button"
+                  aria-label="Close menu"
+                  className="text-light-text p-2"
+                  onClick={() => setMobileMenuOpen(false)}
                 >
-                  {link.name}
-                </a>
-              );
-            })}
-          </motion.div>
+                  <X size={24} />
+                </button>
+              </div>
+              {navLinks.map((link) => {
+                const targetId = link.href.replace("/#", "").replace("/", "");
+                const isActive = activeSection === targetId;
+
+                return (
+                  <a
+                    key={link.name}
+                    href={link.href}
+                    onClick={(e) => handleScrollTo(e, link.href)}
+                    className={`text-xl uppercase tracking-widest font-bold py-4 border-b border-black transition-colors ${
+                      isActive
+                        ? "text-[#5a5047]"
+                        : "text-[#857567] hover:text-[#5a5047]"
+                    }`}
+                  >
+                    {link.name}
+                  </a>
+                );
+              })}
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </header>

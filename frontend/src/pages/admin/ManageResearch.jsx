@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import api from "../../services/api";
 import { toast } from "react-toastify";
 import { Trash2, Edit, Plus } from "lucide-react";
-import { resolveDownloadUrl, resolveMediaUrl } from "../../utils/mediaUrl";
+import { resolveMediaUrl } from "../../utils/mediaUrl";
 
 const ManageResearch = () => {
   const [research, setResearch] = useState([]);
@@ -13,7 +13,7 @@ const ManageResearch = () => {
     tags: "",
     link: "",
   });
-  const [pdfFile, setPdfFile] = useState(null);
+  const [pdfLink, setPdfLink] = useState("");
   const [editId, setEditId] = useState(null);
 
   useEffect(() => {
@@ -31,26 +31,21 @@ const ManageResearch = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = new FormData();
-    data.append("title", formData.title);
-    data.append("abstract", formData.abstract);
-    data.append("year", formData.year);
-    data.append("tags", formData.tags);
-    if (formData.link) data.append("link", formData.link);
-    if (pdfFile) data.append("pdfFile", pdfFile);
+    const payload = {
+      title: formData.title,
+      abstract: formData.abstract,
+      year: formData.year,
+      tags: formData.tags,
+      link: formData.link || "",
+      pdfFile: pdfLink || "",
+    };
 
     try {
       if (editId) {
-        const { data: updated } = await api.put(`/research/${editId}`, data);
-        if (pdfFile && updated?.pdfFile) {
-          window.open(resolveMediaUrl(updated.pdfFile), "_blank", "noopener");
-        }
+        await api.put(`/research/${editId}`, payload);
         toast.success("Research updated");
       } else {
-        const { data: created } = await api.post("/research", data);
-        if (pdfFile && created?.pdfFile) {
-          window.open(resolveMediaUrl(created.pdfFile), "_blank", "noopener");
-        }
+        await api.post("/research", payload);
         toast.success("Research added");
       }
       resetForm();
@@ -84,13 +79,13 @@ const ManageResearch = () => {
       tags: tagsString || "",
       link: item.link || "",
     });
-    setPdfFile(null);
+    setPdfLink(item.pdfFile || "");
   };
 
   const resetForm = () => {
     setEditId(null);
     setFormData({ title: "", abstract: "", year: "", tags: "", link: "" });
-    setPdfFile(null);
+    setPdfLink("");
   };
 
   return (
@@ -161,13 +156,14 @@ const ManageResearch = () => {
         </div>
         <div className="md:col-span-2">
           <label className="block text-sm font-semibold mb-1">
-            PDF Document
+            PDF Link (Optional)
           </label>
           <input
-            type="file"
-            accept="application/pdf"
-            onChange={(e) => setPdfFile(e.target.files[0])}
-            className="w-full p-2 border rounded"
+            type="url"
+            className="w-full p-2 border rounded focus:ring-2 focus:ring-[#857567]"
+            value={pdfLink}
+            onChange={(e) => setPdfLink(e.target.value)}
+            placeholder="https://example.com/paper.pdf"
           />
         </div>
         <div className="md:col-span-2 flex justify-end gap-2 mt-2">
@@ -233,14 +229,6 @@ const ManageResearch = () => {
                   className="inline-block text-sm text-black bg-blue-300 rounded-lg px-3 py-1.5 hover:text-blue-100 hover:underline"
                 >
                   View PDF
-                </a>
-                <a
-                  href={resolveDownloadUrl(item.pdfFile)}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-block text-sm text-black bg-transparent border border-blue-300 rounded-lg px-3 py-1.5 hover:text-blue-100 hover:underline"
-                >
-                  Download PDF
                 </a>
               </div>
             )}

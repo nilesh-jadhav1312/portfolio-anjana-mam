@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Download } from "lucide-react";
 import api from "../../services/api";
-import { resolveMediaUrl, resolveDownloadUrl } from "../../utils/mediaUrl";
+import { resolveMediaUrl } from "../../utils/mediaUrl";
 
 const InfoCard = ({ title, items }) => {
   const [expanded, setExpanded] = useState(false);
@@ -91,13 +91,13 @@ const Profile = () => {
             </div>
             {profile.cvFile && (
               <a
-                href={resolveDownloadUrl(profile.cvFile)}
+                href={resolveMediaUrl(profile.cvFile)}
                 target="_blank"
                 rel="noreferrer"
                 className="mt-8 flex items-center gap-3 px-8 py-3 bg-transparent border-2 border-[#857567] text-light-text hover:bg-[#857567] hover:text-white rounded-full font-bold tracking-wider transition-all duration-300 hover:shadow-[0_0_15px_#857567]"
               >
                 <Download size={20} />
-                DOWNLOAD CV
+                VIEW CV
               </a>
             )}
           </motion.div>
@@ -114,7 +114,7 @@ const Profile = () => {
             <div className="border-b-3 border-l-3 border-[#a99888] bg-[#ded6cc] text-dark-base p-8 rounded-2xl shadow-lg relative overflow-hidden">
               <div className="absolute top-0 right-0 w-20 h-20 bg-[#a99888] scale-150 rotate-45 transform translate-x-10 -translate-y-10 opacity-20"></div>
               <h3 className="text-2xl font-bold mb-4 text-[#5a5047]">
-                Who am I?
+                Who am I ?
               </h3>
               <p className="text-lg text-light-text leading-relaxed">
                 {profile.bio ||

@@ -37,16 +37,10 @@ const updateProfile = async (req, res) => {
         });
         profile.profileImage = upload.secure_url;
       }
-      if (req.files.cvFile) {
-        await deleteFile(profile.cvFile);
-        const upload = await uploadBuffer(req.files.cvFile[0].buffer, {
-          folder: "portfolio/profile",
-          resource_type: "raw",
-          use_filename: true,
-          unique_filename: false,
-        });
-        profile.cvFile = upload.secure_url;
-      }
+    }
+
+    if (typeof req.body.cvFile === "string") {
+      profile.cvFile = req.body.cvFile;
     }
 
     if (

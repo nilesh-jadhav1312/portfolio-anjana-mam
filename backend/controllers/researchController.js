@@ -1,6 +1,4 @@
 const Research = require("../models/Research");
-const deleteFile = require("../utils/deleteFile");
-const { uploadBuffer, isConfigured } = require("../utils/cloudinary");
 
 const getResearch = async (req, res) => {
   try {
@@ -16,23 +14,7 @@ const getResearch = async (req, res) => {
 // @access  Private (Admin)
 const createResearch = async (req, res) => {
   try {
-    const { title, abstract, year, tags, link } = req.body;
-    let pdfFile = null;
-
-    if (req.file) {
-      if (!isConfigured()) {
-        return res
-          .status(500)
-          .json({ message: "Cloudinary is not configured" });
-      }
-      const upload = await uploadBuffer(req.file.buffer, {
-        folder: "portfolio/research",
-        resource_type: "raw",
-        use_filename: true,
-        unique_filename: false,
-      });
-      pdfFile = upload.secure_url;
-    }
+    const { title, abstract, year, tags, link, pdfFile } = req.body;
 
     // Parse comma-separated tags
     const tagsArray = tags ? tags.split(",").map((t) => t.trim()) : [];
@@ -42,7 +24,7 @@ const createResearch = async (req, res) => {
       abstract,
       year,
       tags: tagsArray,
-      pdfFile,
+      pdfFile: pdfFile || null,
       link,
     });
     res.status(201).json(research);
@@ -56,7 +38,7 @@ const createResearch = async (req, res) => {
 // @access  Private (Admin)
 const updateResearch = async (req, res) => {
   try {
-    const { title, abstract, year, tags, link } = req.body;
+    const { title, abstract, year, tags, link, pdfFile } = req.body;
     const research = await Research.findById(req.params.id);
 
     if (research) {
@@ -68,20 +50,8 @@ const updateResearch = async (req, res) => {
       if (tags) {
         research.tags = tags.split(",").map((t) => t.trim());
       }
-      if (req.file) {
-        if (!isConfigured()) {
-          return res
-            .status(500)
-            .json({ message: "Cloudinary is not configured" });
-        }
-        await deleteFile(research.pdfFile);
-        const upload = await uploadBuffer(req.file.buffer, {
-          folder: "portfolio/research",
-          resource_type: "raw",
-          use_filename: true,
-          unique_filename: false,
-        });
-        research.pdfFile = upload.secure_url;
+      if (typeof pdfFile === "string") {
+        research.pdfFile = pdfFile;
       }
 
       const updatedResearch = await research.save();
@@ -98,8 +68,6 @@ const deleteResearch = async (req, res) => {
   try {
     const research = await Research.findById(req.params.id);
     if (!research) return res.status(404).json({ message: "Not found" });
-
-    await deleteFile(research.pdfFile);
 
     await research.deleteOne();
     res.json({ message: "Removed" });

@@ -24,11 +24,30 @@ connectDB();
 const app = express();
 
 
+// app.use(cors({
+//   origin: "https://anjanaarakerimathportfolio.vercel.app",
+//   credentials: true
+// }));
+ 
+const allowedOrigins = (process.env.FRONTEND_URLS || "")
+  .split(",")
+  .map(url => url.trim());
+
 app.use(cors({
-  origin: "https://anjanaarakerimathportfolio.vercel.app",
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true); // Postman / mobile apps
+
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    } else {
+      console.log("Blocked by CORS:", origin); // DEBUG
+      return callback(new Error("CORS not allowed"));
+    }
+  },
   credentials: true
 }));
- 
+
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -46,6 +65,11 @@ app.use("/api/creativity", creativityRoutes);
 app.use("/api/gallery", galleryRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/contact-info", contactInfoRoutes);
+
+// Health check for debugging
+app.get("/api/health", (req, res) => {
+  res.json({ status: "OK" });
+});
 
 // Serve frontend in production
 if (process.env.NODE_ENV === "production") {

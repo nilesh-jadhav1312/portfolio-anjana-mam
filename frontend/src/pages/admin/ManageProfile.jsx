@@ -14,7 +14,7 @@ const ManageProfile = () => {
     professionalMemberships: [],
   });
   const [profileImage, setProfileImage] = useState(null);
-  const [cvFile, setCvFile] = useState(null);
+  const [cvLink, setCvLink] = useState("");
   const [loading, setLoading] = useState(true);
 
   const [newWorkExp, setNewWorkExp] = useState("");
@@ -30,6 +30,7 @@ const ManageProfile = () => {
       const { data } = await api.get("/profile");
       if (data && Object.keys(data).length > 0) {
         setProfile(data);
+        setCvLink(data.cvFile || "");
       }
       setLoading(false);
     } catch (error) {
@@ -59,14 +60,11 @@ const ManageProfile = () => {
       );
 
       if (profileImage) formData.append("profileImage", profileImage);
-      if (cvFile) formData.append("cvFile", cvFile);
+      if (cvLink) formData.append("cvFile", cvLink);
 
       const { data } = await api.put("/profile", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      if (cvFile && data?.cvFile) {
-        window.open(resolveMediaUrl(data.cvFile), "_blank", "noopener");
-      }
       toast.success("Profile updated successfully");
       fetchProfile();
     } catch (error) {
@@ -160,13 +158,14 @@ const ManageProfile = () => {
             </div>
             <div>
               <label className="block text-sm font-semibold mb-1">
-                CV File (PDF)
+                CV Link (PDF)
               </label>
               <input
-                type="file"
-                accept="application/pdf"
-                onChange={(e) => setCvFile(e.target.files[0])}
-                className="w-full p-2 border border-gray-300 rounded bg-white cursor-pointer"
+                type="url"
+                value={cvLink}
+                onChange={(e) => setCvLink(e.target.value)}
+                placeholder="https://example.com/cv.pdf"
+                className="w-full p-2 border border-gray-300 rounded bg-white"
               />
               {profile.cvFile && (
                 <p className="text-xs text-gray-500 mt-1">

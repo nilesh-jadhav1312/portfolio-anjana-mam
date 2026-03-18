@@ -14,7 +14,6 @@ router
     protect,
     upload.fields([
       { name: "profileImage", maxCount: 1 },
-      { name: "cvFile", maxCount: 1 },
     ]),
     updateProfile,
   );

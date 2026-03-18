@@ -73,10 +73,10 @@ const Contact = () => {
               GET IN TOUCH
             </h2>
             <div className="h-1 w-24 bg-[#857567] mx-auto rounded-full mb-6"></div>
-            <p className="text-[#f3eee6] text-lg max-w-2xl mx-auto">
+            {/* <p className="text-[#f3eee6] text-lg max-w-2xl mx-auto">
               Have a project in mind, a research collaboration, or just want to
               say hi? Feel free to drop a message.
-            </p>
+            </p> */}
           </motion.div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -108,7 +108,7 @@ const Contact = () => {
                             ? `mailto:${contactInfo.email}`
                             : "mailto:anjana.arakerimath@pccoepune.org"
                         }
-                        className="text-[#857567] hover:underline font-medium"
+                        className="text-[#857567] hover:underline font-medium break-all"
                       >
                         {contactInfo?.email ||
                           "anjana.arakerimath@pccoepune.org"}
@@ -255,7 +255,7 @@ const Contact = () => {
                       Your Email
                     </label>
                     <input
-                      type="email address"
+                      type="email"
                       required
                       value={formData.email}
                       onChange={(e) =>

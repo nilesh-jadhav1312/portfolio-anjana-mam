@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FileText, Search, BookOpen } from "lucide-react";
 import api from "../../services/api";
-import { resolveDownloadUrl, resolveMediaUrl } from "../../utils/mediaUrl";
+import { resolveMediaUrl } from "../../utils/mediaUrl";
 
 const Research = () => {
   const [researchList, setResearchList] = useState([]);
@@ -208,22 +208,21 @@ const Research = () => {
                     </a>
                   )}
                   {item.pdfFile && (
-  <a
-    // Use the updated resolveMediaUrl which now adds the extension
-    href={resolveMediaUrl(item.pdfFile)}
-    target="_blank" 
-    rel="noopener noreferrer"
-    className={`block text-center w-full py-3 border border-[#857567] font-bold rounded-full transition-colors ${
-      item.link
-        ? "text-[#5a5047] bg-transparent hover:bg-[#857567] hover:text-[#f3eee6]"
-        : "text-light-text bg-[#857567] hover:bg-[#a99888]"
-    }`}
-  >
-    <span className="flex items-center justify-center gap-2">
-      <FileText size={18} /> View PDF
-    </span>
-  </a>
-)}
+                    <a
+                      href={resolveMediaUrl(item.pdfFile)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`block text-center w-full py-3 border border-[#857567] font-bold rounded-full transition-colors ${
+                        item.link
+                          ? "text-[#5a5047] bg-transparent hover:bg-[#857567] hover:text-[#f3eee6]"
+                          : "text-light-text bg-[#857567] hover:bg-[#a99888]"
+                      }`}
+                    >
+                      <span className="flex items-center justify-center gap-2">
+                        <FileText size={18} /> View PDF
+                      </span>
+                    </a>
+                  )}
                   {/* {item.pdfFile && (
                     <>
                       <a

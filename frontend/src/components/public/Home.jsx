@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import homeImage from "../../assets/home.jpg";
 
@@ -73,12 +74,12 @@ const Home = ({ profileData }) => {
             transition={{ duration: 0.8, delay: 1.2 }}
             className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
           >
-            <a
-              href="#research"
+            <Link
+              to="/research"
               className="px-8 py-4 bg-[#857567] text-white rounded-full font-medium tracking-wide hover:bg-[#a99888] hover:shadow-[0_0_20px_rgba(133,117,103,0.4)] transition-all duration-300 transform hover:-translate-y-1 text-center"
             >
               View Research
-            </a>
+            </Link>
             <a
               href="#contact"
               className="px-8 py-4 bg-transparent border-2 border-[#857567] text-light-text rounded-full font-medium tracking-wide hover:bg-[#857567]/10 transition-all duration-300 transform hover:-translate-y-1 text-center"
