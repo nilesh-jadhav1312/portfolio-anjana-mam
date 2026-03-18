@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   Mail,
@@ -320,6 +321,12 @@ const Contact = () => {
             &copy; {new Date().getFullYear()} ANJANA R ARAKERIMATH. All Rights
             Reserved.
           </p>
+          <Link
+            to="/admin/login"
+            className="inline-block mt-4 text-[#857567] hover:text-[#a99888] text-xs font-bold tracking-widest uppercase transition-colors"
+          >
+            Admin Login
+          </Link>
         </div>
       </footer>
     </React.Fragment>
