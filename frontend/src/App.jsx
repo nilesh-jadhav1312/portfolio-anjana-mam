@@ -58,9 +58,6 @@ function App() {
             element={<PageLayout noTopPadding={true}><Gallery /></PageLayout>} 
           />
           
-          {/* Homepage - Needs distinct scroll/anchor behavior handled within MainLayout */}
-          <Route path="/*" element={<MainLayout />} />
-
           {/* Admin Routes */}
           <Route path="/admin/login" element={<Login />} />
           <Route
@@ -71,6 +68,9 @@ function App() {
               </ProtectedRoute>
             }
           />
+          
+          {/* Homepage - Needs distinct scroll/anchor behavior handled within MainLayout */}
+          <Route path="/*" element={<MainLayout />} />
         </Routes>
       </Router>
       <ToastContainer
