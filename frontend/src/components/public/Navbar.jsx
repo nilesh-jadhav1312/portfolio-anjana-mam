@@ -133,7 +133,7 @@ const Navbar = () => {
           onClick={(e) => handleScrollTo(e, "#home")}
           className="text-2xl font-bold tracking-wider text-black relative group overflow-hidden"
         >
-          <span className="relative z-10">Portfolio</span>
+          <span className="relative z-10">Anjana Arakerimath</span>
           <span className="absolute left-0 bottom-0 w-full h-0.5 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></span>
         </a>
 
