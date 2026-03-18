@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Award } from "lucide-react";
+import { Award, X } from "lucide-react";
 import api from "../../services/api";
 import { resolveMediaUrl } from "../../utils/mediaUrl";
 
 const Certification = () => {
   const [certificates, setCertificates] = useState([]);
   const [visibleCount, setVisibleCount] = useState(6);
+  const [selectedCert, setSelectedCert] = useState(null);
 
   useEffect(() => {
     const fetchCertificates = async () => {
@@ -80,14 +81,12 @@ const Certification = () => {
               </div>
 
               {cert.certificateFile ? (
-                <a
-                  href={resolveMediaUrl(cert.certificateFile)}
-                  target="_blank"
-                  rel="noreferrer"
+                <button
+                  onClick={() => setSelectedCert(cert)}
                   className="block text-center w-full py-3 border border-[#857567] text-light-text font-bold rounded-full bg-[#a99888] hover:bg-[#857567] hover:text-[#f3eee6] transition-colors"
                 >
                   View Certificate
-                </a>
+                </button>
               ) : (
                 <button
                   disabled
@@ -109,6 +108,48 @@ const Certification = () => {
           >
             Load More Certifications
           </motion.button>
+        )}
+
+        {/* Certificate Modal Overlay */}
+        {selectedCert && (
+          <div 
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4 backdrop-blur-sm"
+            onClick={() => setSelectedCert(null)}
+          >
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              className="relative max-w-5xl w-full max-h-[90vh] bg-white/5 rounded-2xl overflow-hidden shadow-2xl flex flex-col"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button 
+                className="absolute top-4 right-4 z-50 p-2 bg-black/60 text-white rounded-full hover:bg-black/90 transition-all border border-white/20"
+                onClick={() => setSelectedCert(null)}
+              >
+                <X size={24} />
+              </button>
+              
+              <div className="flex-1 overflow-auto p-2 md:p-4 flex items-center justify-center">
+                <img 
+                  src={resolveMediaUrl(selectedCert.certificateFile)} 
+                  alt={selectedCert.title}
+                  className="max-w-full max-h-[75vh] object-contain rounded-lg shadow-2xl"
+                />
+              </div>
+
+              <div className="bg-black/60 backdrop-blur-md p-6 text-center border-t border-white/10">
+                <h4 className="text-white font-bold text-xl mb-1">{selectedCert.title}</h4>
+                <p className="text-gray-300 text-base">{selectedCert.platform} | {selectedCert.year}</p>
+                <a
+                  href={resolveMediaUrl(selectedCert.certificateFile)}
+                  download
+                  className="inline-block mt-4 px-6 py-2 bg-white/10 text-white rounded-full text-sm font-semibold hover:bg-white/20 transition-colors"
+                >
+                  Download Original
+                </a>
+              </div>
+            </motion.div>
+          </div>
         )}
       </div>
     </section>
