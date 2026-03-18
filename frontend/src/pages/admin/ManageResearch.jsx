@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import api from "../../services/api";
 import { toast } from "react-toastify";
 import { Trash2, Edit, Plus } from "lucide-react";
-import { resolveMediaUrl } from "../../utils/mediaUrl";
 
 const ManageResearch = () => {
   const [research, setResearch] = useState([]);
@@ -223,12 +222,12 @@ const ManageResearch = () => {
             {item.pdfFile && (
               <div className="flex flex-wrap gap-2 mt-3">
                 <a
-                  href={resolveMediaUrl(item.pdfFile)}
+                  href={item.pdfFile}
                   target="_blank"
                   rel="noreferrer"
                   className="inline-block text-sm text-black bg-blue-300 rounded-lg px-3 py-1.5 hover:text-blue-100 hover:underline"
                 >
-                  View PDF
+                  View PDF Link
                 </a>
               </div>
             )}

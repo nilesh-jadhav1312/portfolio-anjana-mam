@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FileText, Search, BookOpen } from "lucide-react";
 import api from "../../services/api";
-import { resolveMediaUrl } from "../../utils/mediaUrl";
 
 const Research = () => {
   const [researchList, setResearchList] = useState([]);
@@ -209,7 +208,7 @@ const Research = () => {
                   )}
                   {item.pdfFile && (
                     <a
-                      href={resolveMediaUrl(item.pdfFile)}
+                      href={item.pdfFile}
                       target="_blank"
                       rel="noopener noreferrer"
                       className={`block text-center w-full py-3 border border-[#857567] font-bold rounded-full transition-colors ${
@@ -219,7 +218,7 @@ const Research = () => {
                       }`}
                     >
                       <span className="flex items-center justify-center gap-2">
-                        <FileText size={18} /> View PDF
+                        <FileText size={18} /> View PDF Link
                       </span>
                     </a>
                   )}

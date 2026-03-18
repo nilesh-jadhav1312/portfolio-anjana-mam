@@ -91,7 +91,7 @@ const Profile = () => {
             </div>
             {profile.cvFile && (
               <a
-                href={resolveMediaUrl(profile.cvFile)}
+                href={profile.cvFile}
                 target="_blank"
                 rel="noreferrer"
                 className="mt-8 flex items-center gap-3 px-8 py-3 bg-transparent border-2 border-[#857567] text-light-text hover:bg-[#857567] hover:text-white rounded-full font-bold tracking-wider transition-all duration-300 hover:shadow-[0_0_15px_#857567]"
